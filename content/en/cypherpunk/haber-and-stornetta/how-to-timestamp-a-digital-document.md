@@ -152,15 +152,61 @@ la $n-esima$ richiesta in sequenza, il TSS esegue due operazioni:
 
 Dopo aver ricevuto $s$ e $ID_n+1$ dal TSS, il cliente verifica che $s$ sia una firma valida di un certificato valido, ad esempio che sia della forma corretta $(n, t, ID_n, L_n)$, contenente il tempo corretto t.
 
+Se il suo documento x marcato temporalmente viene successivamente contestato, il contestatore controlla innanzitutto
+che la marca temporale $( S , I D_n+1 )$ sia della forma corretta (con $S$ che sia la firma valida di un certificato contenente effettivamente l'hash di $x$).
+Per garantire che il cliente interessato non abbia colluso con il TSS, il contestatore può chiamare il cliente $IDn+1$ e chiedergli di produrre il suo time-stamp $(s', ID_n+1)$ Questo include una firma
 
+$ S' = \sigma(n + 1, t_n+1, ID_n+1, y_n+1;L_n+1 )$  
 
+di un certificato che contiene nelle sue informazioni di collegamento $L_n+1$ una copia del suo valore hash
+$y_n$. Questa informazione di collegamento è ulteriormente autenticata dall'inclusione dell'immagine $H ( L_n)$ delle informazioni di collegamento $L_n.
+Uno contestatore particolarmente sospetto può ora chiamare $ID_n+2 e verificare la marca temporale successiva nella sequenza; questo può continuare per tutto il tempo che il contestatore desidera. Allo stesso modo, lo sfidante può anche seguire la catena delle marche temporali a ritroso, a partire dal client $ID_n-1$.
 
+Perché questo vincola il TSS a non produrre firme temporali errate? In primo luogo, si osservi che l'uso della firma ha come effetto che _l'unico_ modo per falsificare una marca temporale è con la collaborazione del TSS.  
+Ma il TSS non può post-datare un documento, perché il certificato deve contenere i bit delle richieste immediatamente precedenti al tempo desiderato, perchè il TSS non li ha ancora ricevuti. Il TSS non può retrodatare un documento preparando una falsa datazione per un'epoca precedente, perché i bit del documento in questione devono essere incorporati nei certificati immediatamente successivi a quel momento precedente, ma questi certificati sono già stati emessi. Inoltre, includere correttamente un documento firmato nel flusso già esistente di certificati con marca temporale richiede il calcolo di una collisione per la funzione hash H.  
 
+Pertanto, l'unica possibilità di falsificazione è preparare una falsa catena di marche temporali, abbastanza lunga da esaurire il contestatore più sospetto che si preveda.
 
+Nello schema appena descritto, i clienti devono conservare tutti i loro certificati. Al fine di
+allentare questo requisito, nella seconda variante di questo schema colleghiamo ogni richiesta non solo alla
+alla richiesta successiva, ma alle successive $k$ richieste. Il TSS risponde all'ennesima
+come segue:
 
+1. Come sopra, il certificato $C_n$ è nella forma $C_n = (n, t_n, ID_n, y_n,; L_n), dove ora l'informazione di collegamento $L_n$ è della forma:
 
+$ L_n = [(t_n-k, ID_n-k, y_n-k, H(L_n-k)), ... , (t_n-1, ID_n-1, y_n-1, H(L_n-1))] $
 
+2. Dopo che le successive $k$ richieste sono state processate, il TSS invia al nostro cliente la lista $(ID_n+1, ..., ID_n+k) $
 
+Dopo aver verificato che la marca temporale di questo cliente è corretta, uno contestatore sospetto può chiedere a uno qualsiasi dei successivi $k$ clienti ID_n+i di produrre la propria marca temporale.
+Come sopra, la sua marca temporale include la firma di un certificato che contiene nelle sue informazioni di collegamento $L_n+i$ una copia delle parti rilevanti pertinente del certificato con marca temporale contestata $Cn$, autenticata dall'inclusione del valore hash di $H$ delle informazioni di collegamento $L_n$ del cliente contestato.
+La sua marca temporale include anche i numeri di cliente (ID_n+i+1, . . . , ID_n+i+k) $, di cui gli ultimi $i$ sono i nuovi; lo sfidante può chiedere a questi clienti le loro marche temporali, 
+e questo può continuare per tutto il tempo che lo sfidante desidera.
+
+Oltre ad alleggerire il requisito di salvataggio di tutti i certificati da parte dei clienti, questa seconda variante ha anche la proprietà di incorporare correttamente un nuovo documento nel flusso già esistente di certificati con data e ora richiede il calcolo di una collisione simultanea di k contemporaneamente una collisione $ampia k$ per la funzione hash $H$, invece di una semplice collisione a coppie.
+
+##5.2 Fiducia distribuita
+
+Per questo schema, si ipotizza che esista uno schema di firma sicuro in modo che ogni utente possa firmare i messaggi, e che un generatore di numeri pseudocasuale sicuro standard $G$ sia disponibile a tutti gli utenti. Un _generatore pseudocasuale_ è un algoritmo che, a partire da una breve sequenza di bit passata in ingresso (detta _seme_) genera in uscita sequenze di bit che sono indistinguibili da quelle generate da un qualsiasi algoritmo plausibile; in particolare, sono imprevedibili. Tali generatori sono stati studiati per la prima volta da Blum e Micali [2] e da Yao [22]; Impagliazzo, Levin e Luby hanno dimostrato che esistono se esiste un algoritmo di
+hanno dimostrato che esistono se esistono funzioni unidirezionali [12].  
+
+Ancora una volta, consideriamo un valore hash $y$ che il nostro cliente vorrebbe marchiare temporalmente. Egli utilizza $y$ come seme per il generatore pseudocasuale il cui risultato può essere interpretato come una $k-tupla$ di numeri di identificazione del cliente. 
+
+$G(y) = (ID_1, ID_2, ..., ID_k)$
+
+Il nostro cliente invia la sua richiesta $(y, ID)$ a ciascuno di questi clienti. In cambio riceve dal cliente $ID_j$ un messaggio firmato $s_j = /sigma_j( t, ID, y)$ che include il tempo $t$. La sua marca temporale è costituita da $(y, ID), (s_1,. . ., s_k)] . Le $k$ firme $s_j$, possono essere facilmente verificate dal nostro cliente o da un potenziale sfidante. Non sono necessarie ulteriori comunicazioni per
+per rispondere a una sfida successiva.  
+
+Perché un tale elenco di firme dovrebbe costituire una marca temporale credibile? Il motivo è che, in queste circostanze, l'unico modo per produrre un documento con una marca temporale valida ma con data e ora falsificate è usare un valore di hash $y$ in modo che $G(y)$ nomini $k$ clienti che sono disposti a collaborare per falsificare la data e l'ora. Se in un qualsiasi momento esiste al massimo una frazione costante $/epsilon$ di clienti potenzialmente  disonesti, il numero atteso di semi $y$ che devono essere provati prima di trovare una $k-tupla$ $G(y)$ contenente solo collaboratori tra questa frazione è $E^-k$. Inoltre, dal momento che abbiamo assunto che G sia un generatore pseudocasuale valido, non esiste un modo più veloce per trovare un seme conveniente $Y$
+se non scegliendolo a caso. Questo ignora l'ulteriore problema dell'avversario, nella maggior parte degli scenari reali di trovare un documento plausibile che produca in modo conveniente un valore di hash $Y$.
+
+Il parametro $k$ deve essere scelto in fase di progettazione del sistema in modo che questo sia
+un calcolo non fattibile. Si osservi che anche una stima molto pessimistica della popolazione di clienti corruttibili $/epsilon$, che potrebbe essere del 90%, non comporta una scelta proibitiva di $k$. Inoltre, non è necessario che l'elenco dei clienti corruttibili sia fisso, purché la loro percentuale di corruzione non superi mai $/epsilon$ .
+
+Questo schema non deve necessariamente utilizzare un TSS centralizzato. Gli unici requisiti sono che sia possibile comunicare con altri client a piacimento e ricevere da loro le firme richieste e che esista una lista pubblica di clienti in modo che sia possibile interpretare il risultato di $G(y)$ in modo standard come una $k-tupla$ di clienti. Un'implementazione pratica di questo metodo
+un'implementazione pratica di questo metodo richiederebbe disposizioni nel protocollo per i clienti
+che non possono essere contattati al momento della richiesta di marca-temporale. Ad esempio, per $k' < k$, il sistema potrebbe accettare risposte firmate da un qualsiasi $k'$ dei $k$ clienti
+nominati da $G(y)$ come una marca temporale valida per $y$ (in questo caso sarebbe necessario un valore maggiore per il parametro k per ottenere la stessa bassa probabilità di trovare un insieme casuale di collaboratori).
 
 
 
