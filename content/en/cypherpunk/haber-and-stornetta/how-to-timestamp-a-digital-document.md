@@ -116,6 +116,49 @@ Controllando la firma, il cliente ha la certezza che il TSS ha effettivamente el
 In questo modo si risolve il problema dell'incompetenza presente e futura del TSS e riduce la necessità del TSS stesso di memorizzare i documenti.
 
 
+## 5 Due schemi di Marca Temporale  
+
+<p align="center"><em>Sed quis custodiet apsos Custodes?<br>
+Juvenal, c. 100 A.D.</em></p>
+<p align="center">Ma chi sorveglia i sorveglianti stessi?</p>  
+
+Quello che abbiamo descritto finora è, a nostro avviso, un metodo pratico per la marcatura temporale di documenti digitali di lunghezza arbitraria.  
+Tuttavia, né la firma né l'uso di funzioni hash impediscono in qualche modo a un servizio di marcatura temporale di emettere un marchio falso.  
+Idealmente, vorremmo un meccanismo che garantisca che, per quanto il TSS sia senza scrupoli, i tempi che certifica saranno sempre quelli corretti e che non sia in grado di emettere marchi errati anche se ci prova.  
+
+Può sembrare difficile specificare una procedura di marcatura temporale in modo da rendere impossibile la produzione di false marche temporali. Dopotutto, se l'output di un algoritmo $A$, dato in ingresso un documento $x$ e alcune informazioni temporali $t$, è una stringa di bit $c = A ( x , t )$ che rappresenta una legittima marca temporale per $x$, cosa impedisce a un falsario, qualche tempo dopo di calcolare le stesse informazioni temporali $t$ e di eseguire $A$ per produrre lo stesso certificato $c$? La domanda è pertinente anche se $A$ è un algoritmo probabilistico.
+
+Il nostro compito può essere visto come il problema di simulare l'azione di un TSS fidato, in assenza di parti fidate. Esistono due approcci piuttosto diversi
+che possiamo adottare, e ognuno di questi porta a una soluzione. Il primo approccio consiste nel vincolare un TSS centralizzato, forse non fidato, a produrre timestamp autentici, in modo tale che sia sufficientemente difficile produrne di falsi.  
+Il secondo approccio consiste nel distribuire in qualche modo la fiducia richiesta tra gli utenti del servizio. Non è chiaro se uno di questi due approcci sia possibile.
+
+### 5.1 Collegamento
+
+La nostra prima soluzione parte dall'osservazione che la sequenza dei clienti che richiedono le marche temporali ed i valori hash che inviano non possono essere conosciuti in anticipo. Quindi, se il TSS include i bit della precedente sequenza di richieste del cliente nel certificato firmato, allora sappiamo che il timestamp si è verificato dopo queste richieste. Ma il requisito di includere nel certificato i bit dei documenti precedenti può essere utilizzato anche per risolvere il problema di vincolare il tempo nell'altra direzione, perché la società di marcatura temporale
+non può emettere certificati successivi a meno di avere disponibile la richiesta attuale.
+
+Descriviamo due varianti di questo schema di collegamento; la prima, leggermente più semplice, evidenzia la nostra idea principale, mentre la seconda può essere preferibile nella pratica.  
+In entrambe le varianti, il TSS farà uso di una funzione hash priva di collisioni, da indicare con $H$. Questa procedura deve essere aggiunta all'uso di funzioni hash da parte dei clienti per produrre il valore hash di ogni documento di cui si desidera avere la marca temporale.  
+Per essere precisi, una richiesta di marcatura temporale consiste in una stringa di $l$ bit $y$ (presumibilmente il valore di hash del documento) e un numero di identificazione del cliente $ID$. Useremo la notazione $\sigma(\cdot)$ per indicare la procedura di firma utilizzata dal TSS. Il TSS emette $certificati$ firmati, sequenzialmente numerati. In risposta alla richiesta $(y_n, ID_n)$ del nostro cliente,
+la $n-esima$ richiesta in sequenza, il TSS esegue due operazioni:
+
+1. Il TSS invia al nostro cliente il certificato firmato $s = \sigma(C_n)$, dove il certificato  
+
+<p align="center"> $C_n = (n, t_n, ID_n, y_n, L_n)$ </p>
+
+è composto dal numero di sequenza n, dall'ora t, dal numero ID del cliente e dal valore di hash $y_n$ della richiesta, e da alcune informazioni di collegamento che provengono dal certificato precedentemente emesso: $L_n = ( t_n-1, ID_n-1, y_n-1, H(L_n-1))$.
+
+2. Quando la richiesta successiva è stata elaborata, il TSS invia al nostro cliente il numero di identificazione $ID_n+1$ per la richiesta successiva.
+
+Dopo aver ricevuto $s$ e $ID_n+1$ dal TSS, il cliente verifica che $s$ sia una firma valida di un certificato valido, ad esempio che sia della forma corretta $(n, t, ID_n, L_n)$, contenente il tempo corretto t.
+
+
+
+
+
+
+
+
 
 
 
