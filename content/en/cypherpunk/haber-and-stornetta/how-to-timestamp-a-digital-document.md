@@ -203,17 +203,58 @@ se non scegliendolo a caso. Questo ignora l'ulteriore problema dell'avversario, 
 Il parametro $k$ deve essere scelto in fase di progettazione del sistema in modo che questo sia
 un calcolo non fattibile. Si osservi che anche una stima molto pessimistica della popolazione di clienti corruttibili $/epsilon$, che potrebbe essere del 90%, non comporta una scelta proibitiva di $k$. Inoltre, non è necessario che l'elenco dei clienti corruttibili sia fisso, purché la loro percentuale di corruzione non superi mai $/epsilon$ .
 
-Questo schema non deve necessariamente utilizzare un TSS centralizzato. Gli unici requisiti sono che sia possibile comunicare con altri client a piacimento e ricevere da loro le firme richieste e che esista una lista pubblica di clienti in modo che sia possibile interpretare il risultato di $G(y)$ in modo standard come una $k-tupla$ di clienti. Un'implementazione pratica di questo metodo
-un'implementazione pratica di questo metodo richiederebbe disposizioni nel protocollo per i clienti
-che non possono essere contattati al momento della richiesta di marca-temporale. Ad esempio, per $k' < k$, il sistema potrebbe accettare risposte firmate da un qualsiasi $k'$ dei $k$ clienti
-nominati da $G(y)$ come una marca temporale valida per $y$ (in questo caso sarebbe necessario un valore maggiore per il parametro k per ottenere la stessa bassa probabilità di trovare un insieme casuale di collaboratori).
+Questo schema non deve necessariamente utilizzare un TSS centralizzato. Gli unici requisiti sono che sia possibile comunicare liberamente con gli altri client, con la possibilità di ricevere da loro le firme richieste e che esista elenco pubblico di clienti in modo che sia possibile interpretare il risultato di $G(y)$ in modo standard come una $k-tupla$ di clienti. Un'implementazione pratica di questo metodo richiederebbe specifiche disposizioni nel protocollo per i clienti che non possono essere contattati al momento della richiesta di marca-temporale. Ad esempio, per $k' < k$, il sistema potrebbe accettare risposte firmate da un qualsiasi $k'$ dei $k$ clienti nominati da $G(y)$ come una marca temporale valida per $y$ (in questo caso sarebbe necessario un valore maggiore per il parametro k per ottenere la stessa bassa probabilità di trovare un insieme casuale di collaboratori).
 
 
+## 6 - Osservazioni
+
+### 6.1 Compromessi
+
+Esiste una serie di compromessi tra i due schemi. Lo schema a fiducia distribuita ha il vantaggio che tutta l'elaborazione avviene al momento della richiesta.
+Nello schema di collegamento, invece, il cliente ha un breve ritardo nell'attesa della seconda parte del certificato; inoltre, inoltre la risposta ad una sfida successiva può richiedere ulteriori
+comunicazioni.  
+Uno svantaggio correlato dello schema di collegamento è che dipende dal fatto che almeno alcune parti (clienti o, forse, il TSS) conservino i propri certificati.
+Lo schema di fiducia distribuita comporta una maggiore richiesta tecnologica al sistema:
+la possibilità di avere a disposizione o richiedere a piacimento una rapida risposta firmata.  
+Lo schema di collegamento localizza il tempo di un documento solo tra l'istante della richiesta precedente e quella successiva il che lo rende più adatto a un contesto in cui vengono inviati relativamente tanti documenti per la marcatura-temporale, rispetto alla scala di importanza della tempistica.  
+Vale la pena di sottolineare che le proprietà di limitazione temporale dello schema di collegamento
+non dipendono dall'uso delle firme digitali.
+
+### 6.2 Vincoli temporali
+
+Vorremmo sottolineare che i nostri schemi vincolano l'evento della marcatura temporale sia
+sia avanti che indietro nel tempo. Tuttavia, se si considera grande a piacere il lasso di tempo tra la creazione di un documento e il momento in cui viene
+marcato, allora nessun metodo può fare più che limitare in avanti il momento in cui il documento stesso è stato creato. Pertanto, in generale, la marca temporale dovrebbe essere considerata solo come prova che un documento non è stato retrodatato.  
+D'altra parte, se l'evento di marcatura temporale può essere reso parte del processo di creazione del documento, allora il vincolo è valido in entrambe le direzioni. Ad esempio, si consideri la
+sequenza di conversazioni telefoniche che passano attraverso un determinato dispositivo. Per elaborare la chiamata successiva su questo dispositivo, si potrebbe richiedere che vengano fornite le informazioni di collegamento
+dalla chiamata precedente. Analogamente, al termine della chiamata, le informazioni di collegamento verrebbero passate alla chiamata successiva. In questo modo, l'evento di creazione di un documento (la telefonata) include un evento di marcatura temporale e quindi il tempo della telefonata può essere fissato in un punto preciso del tempo. La stessa idea potrebbe essere applicata alle sequence di transazioni finanziarie,
+come le compravendite di azioni o gli scambi di valuta, o a qualsiasi sequenza di interazioni elettroniche
+che avvengono attraverso una determinata connessione fisica.
+
+### 6.3 Considerazioni teoriche
+
+Anche se non la useremo in questa sede, suggeriamo che una precisa definizione teorica della complessità del livello più forte possibile di sicurezza della marcatura temporale potrebbe essere data da Goldwasser e Micali [9], Goldwasser, Micali e Rivest [10] e Galil, Haber e Yung [8] per varie applicazioni crittografiche. Le procedure di marca temporale e verifica sarebbero _polinomialmente sicure_ se la probabilità di successo di un avversario con limiti polinomiali che tenta di produrre una marca temporale falsa è minore di un  qualsiasi polinomio in $ 1 / p $ per un valore sufficientemente grande di $ p $.  
+Sotto l'ipotesi che esistano permutazioni unidirezionali $claw free$, possiamo dimostrare che il nostro schema di collegamento è polinomialmente sicuro. Se assumiamo che ci sia sempre al massimo una frazione costante di clienti corruttibili, e assumendo anche l'esistenza di funzioni unidirezionali (e quindi l'esistenza di generatori pseudocasuali e di uno schema di firma sicuro), possiamo dimostrare che il nostro schema di fiducia distribuito è polinomialmente sicuro.  
+Nel paragrafo 4.1 abbiamo menzionato la differenza tra le funzioni hash "senza collisioni" e quelle "universali a senso unico".  L'esistenza di funzioni unidirezionali è sufficiente a garantire anche l'esistenza di funzioni hash universali unidirezionali.  Tuttavia, per dimostrare la sicurezza dei nostri schemi di marcatura temporale, abbiamo apparentemente  bisogno di una maggiore garanzia della difficoltà di produrre collisioni di hash, data dalla definizione di funzioni di hash senza collisioni. Per quanto è attualmente noto, un'ipotesi di complessità più forte - ovvero l'esistenza di coppie permutazioni $claw free$ - è necessaria per dimostrare l'esistenza di tali funzioni. (Si veda anche [5] e [6] per ulteriori discussioni sulle proprietà teoriche delle funzioni hash crittografiche).  
+Se possibile, vorremmo ridurre le assunzioni necessarie per la marca temporale sicura alla semplice assunzione che esistano funzioni unidirezionali. Questa è la
+minima assunzione ragionevole per noi, dal momento che tutta la crittografia basata sulla complessità richiede l'esistenza di funzioni unidirezionali [12, 13]
 
 
+### 6.4 Considerazioni pratiche
 
+Quando si passa dal dominio teorico della complessità a quello dei sistemi crittografici reali, sorgono nuove problematiche. In un certo senso, la marcatura temporale dipende dalle funzioni unidirezionali in misura maggiore rispetto ad altre applicazioni. Ad esempio, se un sistema elettronico di trasferimento fondi si affida a una funzione unidirezionale per l'autenticazione, e questa funzione viene violata, tutti i trasferimenti effettuati prima della violazione sono ancora validi. Per le marche temporali, invece, se la funzione $hash$ viene violata, allora tutte le marche temporali emesse prima della violazione vengono messe in discussione.  
+Una parziale risposta a questo problema è fornita dall'osservazione che le marche temporali
+possono essere rinnovate. Supponiamo di avere due implementazioni di marcatura temporale e che ci sia
+ragione di credere che la prima implementazione sarà presto violata, i certificati
+emessi con la vecchia implementazione possono essere rigenerati con la nuova implementazione.
+Si consideri un certificato con marca temporale creato con la vecchia implementazione che viene marcato con la nuova implementazione prima che quella vecchia sia violata. Prima della violazione della vecchia implementazione, l'unico modo per creare un certificato era quello legittimo. Pertanto, marcando il certificato stesso con la nuova implementazione, si ha la prova non solo che il documento è esistito prima del momento della nuova marcatura, ma anche che è esistito al momento indicato nel certificato originale.
+Un altro problema da considerare è che la produzione di collisioni di hash da sola non è sufficiente a rompere lo schema di marcatura temporale. Piuttosto, è necessario trovare documenti significativi
+che portino alle collisioni. Pertanto, specificando il formato di una classe di documenti, si può
+complicare il compito di trovare collisioni significative. Ad esempio, la densità di testi composti da soli caratteri ASCII tra tutte le possibili stringhe di bit di lunghezza $N$ bytes è $(2^7/2^8)^N$, ovvero
+$1/2^N$, semplicemente perché il bit di ordine superiore di ciascun byte è sempre 0. Ancora peggio, la densità di un testo inglese accettabile può essere delimitata superiormente da una stima dell'entropia della lingua inglese giudicata dai madrelingua [21]. Questo valore è di circa 1 bit per carattere ASCII, che porta a una densità di $(2^1/2^8)^N$, ovvero 1/128^N.
+Lasciamo ai lavori futuri il compito di determinare se sia possibile formalizzare l'aumento della difficoltà di calcolo delle collisioni se i documenti validi sono distribuiti in maniera sparsa e forse casuale nello spazio di input. Allo stesso modo, il fatto che uno schema di collegamento $a-k-vie$
+richieda al potenziale avversario di calcolare collisioni $a-k-vie$ anzichè coppie di collisioni può essere sfruttato per allentare i requisiti della funzione hash. Potrebbe valere la pena investigare la possibilità che esistano funzioni hash per le quali non esistano collisioni $a-k-vie$ tra stringhe in un plausibile sottoinsieme ristretto dello spazio di input: la sicurezza di tale sistema non dipenderebbe più dalla assunzione di complessità. 
 
- 
 
 
 
