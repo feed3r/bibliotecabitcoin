@@ -256,5 +256,38 @@ Lasciamo ai lavori futuri il compito di determinare se sia possibile formalizzar
 richieda al potenziale avversario di calcolare collisioni $a-k-vie$ anzichè coppie di collisioni può essere sfruttato per allentare i requisiti della funzione hash. Potrebbe valere la pena investigare la possibilità che esistano funzioni hash per le quali non esistano collisioni $a-k-vie$ tra stringhe in un plausibile sottoinsieme ristretto dello spazio di input: la sicurezza di tale sistema non dipenderebbe più dalla assunzione di complessità. 
 
 
+### 7 Applicazioni
+
+Utilizzando le migliori funzioni di hash (crittograficamente sicure), schemi di firma e generatori pseudocasuali, abbiamo progettato dei sistemi di maratura temporale aventi le desiderate proprietà formali. Tuttavia, vorremmo sottolineare la natura pratica del nostro suggerimento: poiché esistono implementazioni _pratiche_ di questi strumenti crittografici, sistemi di marcatura temporale possono essere implementati come descritto con un costo accettabile. Alcune funzioni Hash utilizzate nella pratica, come quella di Rivest, risultano piuttosto veloci, anche su PC di fascia bassa [19].  
+Quali tipi di documenti potrebbero beneficiare di una marcatura temporale digitale sicura? Per i documenti che stabiliscono l'anteriorità di un'invenzione o di un'idea, la marcatura temporale ha un chiaro valore. Una caratteristica particolarmente desiderabile della marcatura temporale digitale è che rende possibile stabilire l'anteriorità della proprietà intellettuale senza rivelarne il contenuto. Questo potrebbe avere un effetto significativo sul diritto d'autore e sui brevetti e potrebbe essere applicato in tutti i settori, dal software alla formula segreta della _Coca-Cola_.
+
+
+Ma cosa fare con i documenti per i quali la data non è così significativa, ma è necessario stabilire con certezza se è stato manomesso o meno? Anche questi documenti possono beneficiare della
+della marcatura temporale, nelle seguenti circostanze. Supponiamo che si possa stabilire
+che le conoscenze necessarie o la motivazione per la manomissione di un documento
+non esistevano fino a un tempo identificabile e successivo alla creazione del documento. Ad esempio, si può immaginare
+un'azienda che tratta quotidianamente un gran numero di documenti, alcuni dei quali si rivelano in seguito incriminanti. Se tutti i documenti dell'azienda venissero regolarmente marcati al momento della loro creazione, nel momento in cui ne diventa noto il valore incriminante di alcuni di questi e il modo in cui dovevano essere modificati, sarebbe stato troppo tardi per
+troppo tardi per poterli manomettere. Chiameremo tali documenti _a manomissione imprevedibile_. Diventa chiaro che molti documenti aziendali sono _a manomissione imprevedibile_. Pertanto, se la marcatura temporale venisse incorporata nel processo aziendale, la credibilità di molti documenti potrebbe
+aumentare notevolmente.  
+Una variante che può risultare particolarmente utile per i documenti aziendali è quella di marcare temporalmente un registro di documenti piuttosto che ogni singolo documento. Ad esempio, potrebbe essere calcolato il valore di hash di tutti i documenti aziendali creati nello stesso giorno aggiungendo questo valore al registro giornaliero dei documenti dell'azienda. Successivamente, alla fine della giornata lavorativa, la marcatura temporale potrebbe essere applicata al solo registro. In questo modo si eliminerebbe la spesa di marcatura temporale di ogni singolo documento, pur consentendo di rilevare la manomissione dei singoli documenti; potendo anche determinare se alcuni di questi sono stati distrutti del tutto.  
+Naturalmente, la marcatura temporale digitale non è limitata ai documenti di testo, dato che qualsiasi stringa di bit può essere marcata temporalmente comprese le registrazioni audio digitali, fotografie e video. La maggior parte di questi documenti sono _a manomissione impredibile_ pertanto, la marcatura temporale può aiutare a distinguere una fotografia originale da una ritoccata, un problema che negli ultimi tempi ha ricevuto una notevole attenzione da parte della stampa generalista [1, 11]. In effetti, è difficile pensare a qualsiasi altra "correzione algoritmica" che possa aggiungere maggiore credibilità a fotografie, video o registrazioni audio rispetto alla marcatura temporale.
+
+## 8 Sommario
+
+In questo articolo abbiamo dimostrato che il crescente utilizzo di documenti di testo, audio e video in formato digitale e la facilità con cui tali documenti possono essere modificati crea un nuovo problema: come si può certificare la data di creazione e ultima modifica di un documento? I metodi di certificazione, o marcatura temporale, devono soddisfare due criteri. In primo luogo, devono datare i bit effettivi del documento, senza fare ipotesi sul supporto fisico su cui questo è registrato. In secondo luogo, la marcatura temporale non deve essere falsificabile.  
+Abbiamo proposto due soluzioni a questo problema. Entrambe prevedono l'uso di funzioni funzioni hash $a-una- via$, i cui output vengono elaborati al posto degli effettivi documenti, e di firme digitali. Le soluzioni si differenziano solo per modo in cui si rende non falsificabile la marcatura temporale. Nel primo caso, i valori di hash dei documenti presentati a un TSS
+sono collegati tra loro, e i certificati che attestano il collegamento a un determinato documento vengono distribuiti ad altri clienti sia a monte che a valle di quel documento. Nella
+seconda soluzione, diversi membri dell'insieme di clienti devono marcare temporalmente il valore di hash. I membri sono scelti mediante un generatore pseudocasuale che utilizza il valore di hash del documento stesso come seme. Questo rende impossibile scegliere deliberatamente quali
+clienti devono o non devono marcare temporalmente un determinato hash. Il secondo metodo può essere implementato in assenza di un TSS centralizzato.
+Infine, abbiamo considerato la possibilità di estendere la marcatura temporale per migliorare l'autenticità di documenti per i quali il tempo di creazione o modifica non sia l'elemento critico. Questo è il caso di un'ampia classe di documenti che chiamiamo "a manomissione imprevedibile". Ipotizziamo inoltre che nessuno schema puramente algoritmico possa aggiungere credibilità a un documento più di quanto non faccia la marcatura temporale.
+
+
+
+
+
+
+
+
+
 
 
