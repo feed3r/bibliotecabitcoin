@@ -11,17 +11,19 @@ contributors: ["feeder"]
 
 [Originale](https://link.springer.com/content/pdf/10.1007/3-540-38424-3_32.pdf) - 1991
 
-La prospettiva di un mondo in cui tutti i documenti di testo, audio, immagini e video sono in formato digitale su supporti facilmente modificabili solleva il problema di come fornire una certificazione sicura della data di creazione o di ultima modifica di un documento. Il problema è quello di datare i dati, e non il supporto.  
-In questo articolo proponiamo procedure computazionalmente accettabili per apporre una marca temporale digitale su tali documenti, in modo che sia impossibile per un utente retrodatare o postdatare il proprio documento, anche con la collusione di un sistema di marca temporale.  
-Le nostre procedure mantengono la completa privacy del contenuto dei documenti stessi e non richiedono alcuna registrazione da parte del servizio di marca temporale. 
+## Riassunto
 
-La gloria del tempo è conciliare i re avversari,  
-Svelare il falso e far uscire il vero,  
-Porre il suo sigillo su ciò che è antico,  
-Destare il giorno e sorvegliare la notte,  
-Per far torto a chi fa torto, fino al pentimento. 
+La prospettiva di un mondo in cui tutti i documenti di testo, audio, immagini e video sono memorizzati in formato digitale su supporti facilmente modificabili solleva il problema di come fornire una certificazione affidabile della data di creazione o di ultima modifica di un documento. Il problema è quello di datare i dati, e non il supporto.  
+Nel presente lavoro proponiamo procedure computazionalmente accettabili per apporre una marca temporale digitale su tali documenti, in modo che sia impossibile per un utente retrodatare o postdatare il documento, anche con la collusione di un sistema di marca temporale.  
+Le nostre procedure mantengono la completa privacy del contenuto dei documenti stessi e non richiedono alcuna registrazione da parte del servizio di marcatura temporale. 
 
-William Shakespeare - Lo Stupro di Lucrezia
+<p align=center> La gloria del tempo è conciliare i re avversari, <br> 
+Svelare il falso e far uscire il vero, <br>
+Porre il suo sigillo su ciò che è antico, <br>  
+Destare il giorno e sorvegliare la notte, <br> 
+Per far torto a chi fa torto, fino al pentimento.
+<br><br>
+William Shakespeare - Lo Stupro di Lucrezia </p>
 
 ## 1 - Introduzione
 
@@ -281,6 +283,36 @@ seconda soluzione, diversi membri dell'insieme di clienti devono marcare tempora
 clienti devono o non devono marcare temporalmente un determinato hash. Il secondo metodo può essere implementato in assenza di un TSS centralizzato.
 Infine, abbiamo considerato la possibilità di estendere la marcatura temporale per migliorare l'autenticità di documenti per i quali il tempo di creazione o modifica non sia l'elemento critico. Questo è il caso di un'ampia classe di documenti che chiamiamo "a manomissione imprevedibile". Ipotizziamo inoltre che nessuno schema puramente algoritmico possa aggiungere credibilità a un documento più di quanto non faccia la marcatura temporale.
 
+
+### Ringraziamenti
+
+Desideriamo ringraziare Don Beaver, Shimon Even,George Furnas, Burt Kaliski, Ralph Merkle, Jeff Shrager, Peter Winkler, Yacov Yacobi e Moti Yung per le utili discussioni.  
+
+## Riferimenti bibliografici
+
+[1] J. Alter - When photographs lie. _Newsweek_, pp. 44-45, 30 Luglio, 1990.
+[2] M. Blum e S. Micali - How to generate cryptographically strong sequences of pseudo-random bits. _SIAM Journal on Computing_, 13(4):850-864, Novembre 1984
+[3] G. Brassard e M. Yung -  One-way group actions. In _Advances in Cryptology-Crypto  '90_, these proceedings. Lecture Notes in Computer Science, Springer-Verlag, Berlino, 1991.
+[4] I. Damgård - Collision-free hash functions and public-key signature schemes. In _Advances in Cryptology-Eurocrypt '87_, pp. 203-217. Lecture Notes in Computer Science, vol. 304, Springer-Verlag, Berlino, 1988.
+[5] I. Damgård - A design principle for hash functions. In _Advances in Cryptology-Crypto '89_ (ed. G. Brassard), pp. 416-427. Lecture Notes in Computer Science, vol. 435, Springer-Verlag, Berlino, 1990.
+[6] A. DeSantis e M. Yung - On the design of provably secure cryptographic hash functions. In _Advances in Cryptology-Eurocrypt '90_. Lecture Notes in Computer Science, Springer-Verlag, Berlino, in pubblicazione.
+[7] W. Diffie and M.E. Hellman - New directions in cryptography. _IEEE Trans. on Inform. Theory_, vol. IT-22, Novembre 1976, pp. 644-654.
+[8] Z. Galil, S. Haber e M. Yung - Interactive public-key cryptosystems. Candidato alla pubblicazione, 1990.
+[9] S. Goldwasser e S. Micali -  Probabilistic encryption. _JCSS_, 28:270-299, Aprile 1984.
+[10] S. Goldwasser, S. Micali, e R. Rivest - A secure digital signature scheme. _SIAM Journal on Computing_, 17(2):281-308, 1988.
+[11] Andy Grundberg - Ask it no questions: The camera can lie. _The New York Times, section 2_, pp. 1, 29, 12 Agosto 1990.
+[12] R. Impagliazzo, L. Levin, e M. Luby - Pseudorandom generation from one-way functions. In _Proc. 2lst STOC_, pp. 12-24. ACM, New York, 1989.
+[13] R. Impagliazzo and M. Luby - One-way functions are essential for complexity-based cryptography. In _Proc. 30th FOGS_, pp. 230-235. IEEE, New York, 1989.
+[14] H. M. Kanare - Writing the laboratory notebook - p. 117. _American Chemical Society, Washington, D.C._, 1985.
+[15] R.C. Merkle - Secrecy, authentication, and public-key systems. Ph.D. thesis, Stanford University, 1979.
+[16] R.C. Merkle - One-way hash functions and DES. In _Advances in Cryptology-Crypto '89_ (ed. G. Brassard), pp. 428-446. Lecture Notes in Computer Science, vol. 435, Springer-Veriag, Berlino, 1990.
+[17] M. Naor e M. Yung - Universal one-way hash functions and their cryptographic applications. In _Proc. 21st STOC_, pp. 33-43. ACM, New York, 1989.
+[18] M.O. Rabin - Digitalized signatures. In _Foundations of Secure Computation_ (ed. R.A. DeMillo et al.), pp. 155-168. Academic Press, 1978.
+[19] R. Rivest - The MD4 message digest algorithm. In _Advances in Cryptoloqy-Crypto '90_, these proceedings. Lecture Notes in Computer Science, Springer-Verlag, Berlino, 1991.
+[20] J. Rompel - One-way functions are necessary and sufficient for secure signatures. In _Proc. 22nd STOC_, pp. 387-394. ACM, New York, 1990.
+[21] C. Shannon - Prediction and entropy of printed English. _Bell System Technical Journal_, vol. 30 pp. 50-64, 1951.
+[22] A.C. Yao - Theory and applications of trapdoor functions. In _Proc. 23rd FOCS_,
+pp. 80-91. IEEE, New York, 1982.
 
 
 
