@@ -17,13 +17,13 @@ La prospettiva di un mondo in cui tutti i documenti di testo, audio, immagini e 
 Nel presente lavoro proponiamo procedure computazionalmente accettabili per apporre una marca temporale digitale su tali documenti, in modo che sia impossibile per un utente retrodatare o postdatare il documento, anche con la collusione di un sistema di marca temporale.  
 Le nostre procedure mantengono la completa privacy del contenuto dei documenti stessi e non richiedono alcuna registrazione da parte del servizio di marcatura temporale. 
 
-<p align=center> La gloria del tempo è conciliare i re avversari, <br> 
+<p align=center> <em>La gloria del tempo è conciliare i re avversari, <br> 
 Svelare il falso e far uscire il vero, <br>
 Porre il suo sigillo su ciò che è antico, <br>  
 Destare il giorno e sorvegliare la notte, <br> 
 Per far torto a chi fa torto, fino al pentimento.
 <br><br>
-William Shakespeare - Lo Stupro di Lucrezia </p>
+William Shakespeare - Lo Stupro di Lucrezia </em></p>
 
 ## 1 - Introduzione
 
@@ -87,9 +87,8 @@ La prima semplificazione consiste nel fare uso di una famiglia di _"funzioni Has
 
 Si tratta di una famiglia di funzioni  
 
-<p align=center><span class="math inline"><em>h</em></span> : <span
-class="math inline">{0, 1}<sup>*</sup></span> &rarr; <span
-class="math inline">{0, 1}<sup><em>l</em></sup></span></p>
+
+$$h: {\lbrace0, 1\rbrace}^\* \rightarrow  {\lbrace0, 1\rbrace}^l$$
 
 che comprimano stringhe di bit di lunghezza arbitraria a stringhe di bit di lunghezza fissa $l$, con le seguenti proprietà:
 
@@ -147,22 +146,20 @@ la $n-esima$ richiesta in sequenza, il TSS esegue due operazioni:
 
 1. Il TSS invia al nostro cliente il certificato firmato $s = \sigma(C_n)$, dove il certificato  
 
-<p align=center><span
-class="math inline"><em>C</em><sub><em>n</em></sub> = (<em>n</em>, <em>t</em><sub><em>n</em></sub>, <em>ID</em><sub><em>n</em></sub>, <em>y</em><sub><em>n</em></sub>, <em>L</em><sub><em>n</em></sub>)</span></p>
+$$C_n = (n, t_n, ID_n, y_n, L_n)$$
 
 è composto dal numero di sequenza $n$, dall'ora $t$, dal numero $ID$ del cliente e dal valore di hash $y_n$ della richiesta, e da alcune informazioni di collegamento che provengono dal certificato precedentemente emesso:  
 
-<p align=center><span
-class="math inline"><em>L</em><sub><em>n</em></sub> = (<em>t</em><sub><em>n</em></sub>−1, <em>ID</em><sub><em>n</em></sub>−1, <em>y</em><sub><em>n</em></sub>−1, <em>H</em>(<em>L</em><sub><em>n</em></sub>−1))</span></p>
+$$L_n = (t_{n-1}, ID_{n-1}, y_{n-1}, H(L_{n-1}))$$
 
-2. Quando la richiesta successiva è stata elaborata, il TSS invia al nostro cliente il numero di identificazione <em>ID</em><sub><em>n+1</sub></em> per la richiesta successiva.
+2. Quando la richiesta successiva è stata elaborata, il TSS invia al nostro cliente il numero di identificazione <em>ID<sub>n+1</sub></em> per la richiesta successiva.
 
 Dopo aver ricevuto $s$ e <em>ID</em><sub><em>n+1</sub></em> dal TSS, il cliente verifica che $s$ sia una firma valida di un certificato valido, ad esempio che sia della forma corretta $(n, t, ID_n, L_n)$, contenente il tempo corretto $t$.
 
-Se il suo documento $x$ marcato temporalmente venisse successivamente contestato, il contestatore controllerebbe innanzitutto che la marca temporale $( S $, <em>ID</em><sub><em>n+1</sub></em> $)$ sia della forma corretta (con $S$ che sia la firma valida di un certificato contenente effettivamente l'hash di $x$).  
-Per garantire che il cliente interessato non abbia colluso con il TSS, il contestatore può chiamare il cliente <em>ID</em><sub><em>n+1</sub></em> e chiedergli di produrre il suo time-stamp $(s', $<em>ID</em><sub><em>n+1</sub></em>$)$. Questo includerebbe una firma
+Se il suo documento $x$ marcato temporalmente venisse successivamente contestato, il contestatore controllerebbe innanzitutto che la marca temporale $( S $, <em>ID<sub>n+1</sub></em>$)$ sia della forma corretta (con $S$ che sia la firma valida di un certificato contenente effettivamente l'hash di $x$).  
+Per garantire che il cliente interessato non abbia colluso con il TSS, il contestatore può chiamare il cliente <em>ID</em><sub><em>n+1</sub></em> e chiedergli di produrre il suo time-stamp $(s',$ <em>ID<sub>n+1</sub></em>$)$. Questo includerebbe una firma
 
-$ S' = \sigma(n + 1, $<em>t<sub>n+1</sub>, ID<sub>n+1</sub>, y<sub>n+1</sub>; L<sub>n+1</sub></em> $)$  
+$$ S' = \sigma(n + 1, t_{n+1}, ID_{n+1}, y_{n+1}; L_{n+1})$$  
 
 di un certificato che contenga nelle sue informazioni di collegamento $L$<sub>n+1</sub> una copia del suo valore hash
 $y_n$. Questa informazione di collegamento è ulteriormente autenticata dall'inclusione dell'immagine $H (L_n)$ delle informazioni di collegamento $L_n$.
@@ -180,30 +177,30 @@ come segue:
 
 1. Come sopra, il certificato $C_n$ è nella forma   
 
-$C_n = (n, t_n, ID_n, y_n,; L_n)$   
+$$ C_n = (n, t_n, ID_n, y_n; L_n) $$
 
 dove ora l'informazione di collegamento $L_n$ è della forma:
 
-$ L_n = [(t$<sub>n-k</sub>$, ID$<sub>n-k</sub>$, y$<sub>n-k</sub>$, H(L$<sub>n-k</sub>$)), ... , (t$<sub>n-1</sub>$, ID$<sub>n-1</sub>$, y$<sub>n-1</sub>$, H(L$<sub>n-1</sub>$))] $
+$$ L_n = [(t_{n-k}, ID_{n-k}, y_{n-k}, H(L_{n-k})), ..., (t_{n-1}, ID_{n-1}, y_{n-1}, H(L_{n-1}))] $$
 
-2. Dopo che le successive $k$ richieste sono state processate, il TSS invia al nostro cliente la lista $(ID$<sub>n+1</sub>$, ..., ID$<sub>n+k</sub>$) $
+2. Dopo che le successive $k$ richieste sono state processate, il TSS invia al nostro cliente la lista $(ID_{n+1}, ..., ID_{n+k}) $
 
 Dopo aver verificato che la marca temporale di questo cliente è corretta, un contestatore sospetto può chiedere a uno qualsiasi dei successivi $k$ clienti $ID$<sub>n+i</sub> di produrre la propria marcatura temporale.  
 Come sopra, la sua marca temporale include la firma di un certificato che contiene nelle sue informazioni di collegamento $L$<sub>n+i</sub> una copia delle parti rilevanti di pertinenza del certificato con marca temporale contestata $Cn$, autenticata dall'inclusione del valore hash di $H$ delle informazioni di collegamento $L_n$ del cliente contestato.
-La sua marca temporale include anche i numeri di cliente $(ID<sub>n+i+1</sub>$, . . . , ID$<sub>n+i+k</sub>$) $, di cui gli ultimi $i$ sono i nuovi; lo sfidante può chiedere a questi clienti le loro marche temporali, e questo può continuare per tutto il tempo che lo sfidante desidera.
+La sua marca temporale include anche i numeri di cliente $(ID_{n+i+1}, ..., ID_{n+i+k})$, di cui gli ultimi $i$ sono i nuovi; lo sfidante può chiedere a questi clienti le loro marche temporali, e questo può continuare per tutto il tempo desiderato dallo sfidante.
 
 Oltre ad alleggerire il requisito di salvataggio di tutti i certificati da parte dei clienti, questa seconda variante rinforza la sicurezza del sistema, dove per incorporare correttamente un nuovo documento nel flusso già esistente di certificati marchiati con data e ora richiede il calcolo di una collisione simultanea $ampia k$ per la funzione hash $H$, invece di una semplice collisione a coppie.
 
-##5.2 Fiducia distribuita
+### 5.2 Fiducia distribuita
 
 Per questo schema, si ipotizza che esista uno schema di firma sicuro in modo che ogni utente possa firmare i messaggi, e che un generatore di numeri pseudocasuale sicuro standard $G$ sia disponibile a tutti gli utenti. Un _generatore pseudocasuale_ è un algoritmo che, a partire da una breve sequenza di bit passata in ingresso (detta _seme_) genera in uscita sequenze di bit che sono indistinguibili da quelle generate da un qualsiasi algoritmo plausibile; in particolare, sono imprevedibili. Tali generatori sono stati studiati per la prima volta da Blum e Micali [2] e da Yao [22]; Impagliazzo, Levin e Luby hanno dimostrato che esistono se esiste un algoritmo di
 hanno dimostrato che esistono se esistono funzioni unidirezionali [12].  
 
 Ancora una volta, consideriamo un valore hash $y$ che il nostro cliente vorrebbe marchiare temporalmente. Egli utilizza $y$ come seme per il generatore pseudocasuale il cui risultato può essere interpretato come una $k-tupla$ di numeri di identificazione del cliente. 
 
-$G(y) = (ID_1, ID_2, ..., ID_k)$
+$$G(y) = (ID_1, ID_2, ..., ID_k)$$
 
-Il nostro cliente invia la sua richiesta $(y, ID)$ a ciascuno di questi clienti. In cambio riceve dal cliente $ID_j$ un messaggio firmato $s_j = /sigma_j( t, ID, y)$ che include il tempo $t$. La sua marca temporale è costituita da $(y, ID), (s_1,. . ., s_k)] . Le $k$ firme $s_j$, possono essere facilmente verificate dal nostro cliente o da un potenziale sfidante. Non sono necessarie ulteriori comunicazioni per
+Il nostro cliente invia la sua richiesta $(y, ID)$ a ciascuno di questi clienti. In cambio riceve dal cliente $ID_j$ un messaggio firmato $s_j = /sigma_j( t, ID, y)$ che include il tempo $t$. La sua marca temporale è costituita da $(y, ID), (s_1,. . ., s_k)]$. Le $k$ firme $s_j$, possono essere facilmente verificate dal nostro cliente o da un potenziale sfidante. Non sono necessarie ulteriori comunicazioni per
 per rispondere a una sfida successiva.  
 
 Perché un tale elenco di firme dovrebbe costituire una marca temporale credibile? Il motivo è che, in queste circostanze, l'unico modo per produrre un documento con una marca temporale valida ma con data e ora falsificate è usare un valore di hash $y$ in modo che $G(y)$ nomini $k$ clienti che sono disposti a collaborare per falsificare la data e l'ora. Se in un qualsiasi momento esiste al massimo una frazione costante $/epsilon$ di clienti potenzialmente  disonesti, il numero atteso di semi $y$ che devono essere provati prima di trovare una $k-tupla$ $G(y)$ contenente solo collaboratori tra questa frazione è $E^-k$. Inoltre, dal momento che abbiamo assunto che G sia un generatore pseudocasuale valido, non esiste un modo più veloce per trovare un seme conveniente $Y$
@@ -275,8 +272,7 @@ Ma cosa fare con i documenti per i quali la data non è così significativa, ma 
 della marcatura temporale, nelle seguenti circostanze. Supponiamo che si possa stabilire
 che le conoscenze necessarie o la motivazione per la manomissione di un documento
 non esistevano fino a un tempo identificabile e successivo alla creazione del documento. Ad esempio, si può immaginare
-un'azienda che tratta quotidianamente un gran numero di documenti, alcuni dei quali si rivelano in seguito incriminanti. Se tutti i documenti dell'azienda venissero regolarmente marcati al momento della loro creazione, nel momento in cui ne diventa noto il valore incriminante di alcuni di questi e il modo in cui dovevano essere modificati, sarebbe stato troppo tardi per
-troppo tardi per poterli manomettere. Chiameremo tali documenti _a manomissione imprevedibile_. Diventa chiaro che molti documenti aziendali sono _a manomissione imprevedibile_. Pertanto, se la marcatura temporale venisse incorporata nel processo aziendale, la credibilità di molti documenti potrebbe
+un'azienda che tratta quotidianamente un gran numero di documenti, alcuni dei quali si rivelano in seguito incriminanti. Se tutti i documenti dell'azienda venissero regolarmente marcati al momento della loro creazione, nel momento in cui ne diventa noto il valore incriminante di alcuni di questi e il modo in cui dovevano essere modificati, sarebbe stato troppo tardi per poterli manomettere. Chiameremo tali documenti _a manomissione imprevedibile_. Diventa chiaro che molti documenti aziendali sono _a manomissione imprevedibile_. Pertanto, se la marcatura temporale venisse incorporata nel processo aziendale, la credibilità di molti documenti potrebbe
 aumentare notevolmente.  
 Una variante che può risultare particolarmente utile per i documenti aziendali è quella di marcare temporalmente un registro di documenti piuttosto che ogni singolo documento. Ad esempio, potrebbe essere calcolato il valore di hash di tutti i documenti aziendali creati nello stesso giorno aggiungendo questo valore al registro giornaliero dei documenti dell'azienda. Successivamente, alla fine della giornata lavorativa, la marcatura temporale potrebbe essere applicata al solo registro. In questo modo si eliminerebbe la spesa di marcatura temporale di ogni singolo documento, pur consentendo di rilevare la manomissione dei singoli documenti; potendo anche determinare se alcuni di questi sono stati distrutti del tutto.  
 Naturalmente, la marcatura temporale digitale non è limitata ai documenti di testo, dato che qualsiasi stringa di bit può essere marcata temporalmente comprese le registrazioni audio digitali, fotografie e video. La maggior parte di questi documenti sono _a manomissione impredibile_ pertanto, la marcatura temporale può aiutare a distinguere una fotografia originale da una ritoccata, un problema che negli ultimi tempi ha ricevuto una notevole attenzione da parte della stampa generalista [1, 11]. In effetti, è difficile pensare a qualsiasi altra "correzione algoritmica" che possa aggiungere maggiore credibilità a fotografie, video o registrazioni audio rispetto alla marcatura temporale.
